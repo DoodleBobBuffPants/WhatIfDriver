@@ -1,8 +1,6 @@
 package doodlebobbuffpants.whatif.driver;
 
-import doodlebobbuffpants.whatif.driver.exception.WhatIfCloseWriterException;
-import doodlebobbuffpants.whatif.driver.exception.WhatIfFlushWriterException;
-import doodlebobbuffpants.whatif.driver.exception.WhatIfOpenWriterException;
+import doodlebobbuffpants.whatif.driver.exception.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -24,6 +22,14 @@ public class WhatIfWriter implements AutoCloseable {
     public void writeLine(String line) throws IOException {
         writer.write(line);
         writer.newLine();
+    }
+
+    public void flush() {
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            throw new WhatIfWriterException("Unable to flush", e);
+        }
     }
 
     @Override

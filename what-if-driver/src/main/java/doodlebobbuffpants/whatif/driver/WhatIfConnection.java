@@ -3,6 +3,8 @@ package doodlebobbuffpants.whatif.driver;
 import doodlebobbuffpants.whatif.driver.exception.WhatIfConnectionException;
 import doodlebobbuffpants.whatif.driver.exception.WhatIfSchemaException;
 import doodlebobbuffpants.whatif.driver.exception.WhatIfWriterException;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.experimental.Delegate;
 
 import java.io.IOException;
@@ -16,6 +18,7 @@ import static doodlebobbuffpants.whatif.driver.exception.ExceptionUtils.append;
 
 public class WhatIfConnection implements Connection {
     @Delegate(types = Connection.class, excludes = ConnectionDelegateExclusion.class)
+    @Getter(AccessLevel.PACKAGE)
     private final Connection wrappedConnection;
     private final WhatIfWriter writer;
     private final Map<InterceptProperty, String> intercepts;
@@ -33,8 +36,8 @@ public class WhatIfConnection implements Connection {
     }
 
     @Override
-    public Statement createStatement() {
-        return new WhatIfStatement(writer);
+    public Statement createStatement() throws SQLException {
+        return new WhatIfStatement(writer, this);
     }
 
     @Override
@@ -75,7 +78,7 @@ public class WhatIfConnection implements Connection {
     }
 
     @Override
-    public Statement createStatement(int resultSetType, int resultSetConcurrency) {
+    public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
         return createStatement();
     }
 
@@ -90,7 +93,7 @@ public class WhatIfConnection implements Connection {
     }
 
     @Override
-    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) {
+    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
         return createStatement();
     }
 
