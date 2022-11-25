@@ -10,7 +10,8 @@ public class WhatIfDriver implements Driver {
     public WhatIfDriver() {
         try {
             DriverManager.registerDriver(this);
-        } catch (SQLException ignored) { }
+        } catch (SQLException ignored) {
+        }
     }
 
     @Override
